@@ -4,6 +4,7 @@ import { db } from './data/guitarras'
 import Guitarra from './components/Guitarra.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import { baseCompile } from '@vue/compiler-core'
 
 const guitarras = ref([])
 const carrito = ref([])
@@ -45,6 +46,15 @@ const incrementarCantidad = (id) => {
   if (carrito.value[index].cantidad >= 5) return
   carrito.value[index].cantidad++
 }
+
+const eliminarProducto = (id) => {
+    carrito.value = carrito.value.filter(producto => producto.id !== id)
+}
+
+const vaciarCarrito = () => {
+    // carrito.value = carrito.value.splice(0)
+    carrito.value = []
+}
 </script>
 
 <template>
@@ -54,14 +64,16 @@ const incrementarCantidad = (id) => {
         @decrementar-cantidad="decrementarCantidad"
         @incrementar-cantidad="incrementarCantidad"
         @agregar-carrito="agregarCarrito"
+        @eliminar-producto="eliminarProducto"
+        @vaciar-carrito="vaciarCarrito"
     >
     </Header>
     <main class="container-xl mt-5">
         <h2 class="text-center">Nuestra Colección</h2>
 
         <div class="row mt-5">
-            <!-- 
-                Renderizado de componente Guitarra 
+            <!--
+                Renderizado de componente Guitarra
             -->
             <Guitarra
               v-for="guitarra in guitarras"
