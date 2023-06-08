@@ -5,7 +5,10 @@ const props = defineProps({
         required: true
     }
 })
+
+defineEmits(['decrementar-cantidad', 'incrementar-cantidad'])
 </script>
+
 <template>
     <header class="py-5 header">
         <div class="container-xl">
@@ -56,6 +59,7 @@ const props = defineProps({
                                             <button
                                                 type="button"
                                                 class="btn btn-dark"
+                                                @click="$emit('decrementar-cantidad', producto.id)"
                                             >
                                                 -
                                             </button>
@@ -63,6 +67,7 @@ const props = defineProps({
                                             <button
                                                 type="button"
                                                 class="btn btn-dark"
+                                                @click="$emit('incrementar-cantidad', producto.id)"
                                             >
                                                 +
                                             </button>
