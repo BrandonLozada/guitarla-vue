@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
+
 const props = defineProps({
   carrito: {
     type: Array,
@@ -21,10 +22,8 @@ defineEmits([
 
 const totalPagar = computed(() => {
   return props.carrito.reduce(
-    (total, producto) => total + producto.cantidad * producto.precio,
-    0
-  );
-});
+    (total, producto) => total + producto.cantidad * producto.precio, 0)
+})
 </script>
 
 <template>
@@ -116,7 +115,6 @@ const totalPagar = computed(() => {
           </div>
         </nav>
       </div>
-      <!--.row-->
 
       <div class="row mt-5">
         <div class="col-md-6 text-center text-md-start pt-5">
@@ -137,7 +135,7 @@ const totalPagar = computed(() => {
     <img
       class="header-guitarra"
       src="/img/header_guitarra.png"
-      alt="imagen header"
+      :alt="'imagen header guitarra ' + guitarra.nombre">
     />
   </header>
 </template>

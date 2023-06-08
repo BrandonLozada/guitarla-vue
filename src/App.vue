@@ -1,26 +1,33 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { db } from './data/guitarras'
 import Guitarra from './components/Guitarra.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-import { baseCompile } from '@vue/compiler-core'
 
 const guitarras = ref([])
 const carrito = ref([])
 const guitarra = ref({})
 
-/*
-    Consumo de guitarras
-*/
+watch(carrito, () => {
+    guardarLocalStorage()
+}, {
+    deep: true
+})
+
 onMounted(() => {
   guitarras.value = db
   guitarra.value = db[3]
+
+  const carritoStorage = localStorage.getItem('carrito')
+  if (carritoStorage) {carrito.value = JSON.parse(carritoStorage)}
+
 })
 
-/*
-    Evento de agregarCarrito
-*/
+const guardarLocalStorage = () => {
+    localStorage.setItem('carrito', JSON.stringify(carrito.value))
+}
+
 const agregarCarrito = (guitarra) => {
     const existeCarrito = carrito.value.findIndex(producto => producto.id === guitarra.id)
 
@@ -32,9 +39,6 @@ const agregarCarrito = (guitarra) => {
     }
 }
 
-/*
-    Modificar cantidades en carrito
-*/
 const decrementarCantidad = (id) => {
   const index = carrito.value.findIndex(producto => producto.id === id)
   if (carrito.value[index].cantidad <= 1) return
@@ -52,7 +56,6 @@ const eliminarProducto = (id) => {
 }
 
 const vaciarCarrito = () => {
-    // carrito.value = carrito.value.splice(0)
     carrito.value = []
 }
 </script>
@@ -72,9 +75,6 @@ const vaciarCarrito = () => {
         <h2 class="text-center">Nuestra Colección</h2>
 
         <div class="row mt-5">
-            <!--
-                Renderizado de componente Guitarra
-            -->
             <Guitarra
               v-for="guitarra in guitarras"
               v-bind:guitarra="guitarra"
@@ -84,7 +84,5 @@ const vaciarCarrito = () => {
 
         </div>
     </main>
-
     <Footer></Footer>
-
 </template>
